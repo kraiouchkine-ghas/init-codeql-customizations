@@ -16,7 +16,7 @@ jobs:
         with:
           bundle-version: codeql-bundle-20221105
           packs: "aws-lambda/csharp-customizations"
-          platforms: "linux64,win64,osx64"
+          platforms: "linux64"
           default-config: "codeql-configuration.yml"
 
       - name: Release Bundle
