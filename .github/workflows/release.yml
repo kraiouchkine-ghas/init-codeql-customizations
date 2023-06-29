@@ -18,3 +18,16 @@ jobs:
           packs: "aws-lambda/csharp-customizations"
           platforms: "linux64"
           default-config: "codeql-configuration.yml"
+          
+          
+      - name: Release Bundle
+        env:
+          BUNDLE_PATH: codeql-bundle-linux64.tar.gz
+          BUNDLE_TAG: ${{ steps.codeql-bundle.outputs.bundle-tag }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view $BUNDLE_TAG; then
+            gh release upload --clobber $BUNDLE_TAG $BUNDLE_PATH
+          else
+            gh release create $BUNDLE_TAG $BUNDLE_PATH --generate-notes
+          fi
