@@ -1,0 +1,7 @@
+---
+library: true
+name: aws-lambda/csharp-customizations
+version: 0.0.1
+dependencies:
+  codeql/csharp-all: 0.4.3
+extractor: csharp

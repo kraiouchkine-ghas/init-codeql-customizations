@@ -1,0 +1,31 @@
+name: Release Bundle
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    name: Build and Release Bundle
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Create CodeQL Customizations Bundle
+        id: codeql-bundle
+        uses: "advanced-security/codeql-bundle-action@main"
+        with:
+          bundle-version: codeql-bundle-20221105
+          packs: "aws-lambda/csharp-customizations"
+          default-config: "codeql-configuration.yml"
+
+      - name: Release Bundle
+        env:
+          BUNDLE_PATH: ${{ steps.codeql-bundle.outputs.bundle-path }}
+          BUNDLE_TAG: ${{ steps.codeql-bundle.outputs.bundle-tag }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view $BUNDLE_TAG; then
+            gh release upload --clobber $BUNDLE_TAG $BUNDLE_PATH
+          else
+            gh release create $BUNDLE_TAG $BUNDLE_PATH --generate-notes
+          fi
