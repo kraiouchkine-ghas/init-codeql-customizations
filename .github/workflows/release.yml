@@ -22,7 +22,7 @@ jobs:
           
       - name: Release Bundle
         env:
-          BUNDLE_PATH: codeql-bundle-linux64.tar.gz
+          BUNDLE_PATH: /home/runner/work/_temp/codeql-bundle-linux64.tar.gz
           BUNDLE_TAG: ${{ steps.codeql-bundle.outputs.bundle-tag }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
